@@ -17442,5 +17442,43 @@
         "version": "0.1.0"
       }
     ]
+  },
+  {
+    "id": "a988991b-a6fe-43d1-af5e-f5b6789b24e6",
+    "name": "io.github.xquik-dev/x-twitter-scraper",
+    "description": "Xquik remote MCP server for public X/Twitter data workflows, API exploration, media metadata, and monitoring setup.",
+    "repository": {
+      "url": "https://github.com/Xquik-dev/x-twitter-scraper",
+      "source": "github",
+      "id": "1168120544"
+    },
+    "version_detail": {
+      "version": "0.0.1-seed",
+      "release_date": "2026-06-13T04:12:30Z",
+      "is_latest": true
+    },
+    "package_canonical": "unknown",
+    "packages": [
+      {
+        "registry_name": "unknown",
+        "name": "xquik-remote-mcp",
+        "version": "",
+        "environment_variables": [
+          {
+            "description": "Xquik API key",
+            "is_required": true,
+            "format": "string",
+            "is_secret": true,
+            "name": "XQUIK_API_KEY"
+          }
+        ]
+      }
+    ],
+    "remotes": [
+      {
+        "transport_type": "streamable",
+        "url": "https://xquik.com/mcp"
+      }
+    ]
   }
 ]
