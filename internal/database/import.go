@@ -33,7 +33,7 @@ func ImportSeedFile(mongo *MongoDB, seedFilePath string) error {
 	// Read the seed file
 	seedData, err := readSeedFile(seedFilePath)
 	if err != nil {
-		log.Fatalf("Failed to read seed file: %v", err)
+		return fmt.Errorf("failed to read seed file: %w", err)
 	}
 
 	collection := mongo.collection
