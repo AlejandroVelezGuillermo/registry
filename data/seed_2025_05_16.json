@@ -17442,5 +17442,43 @@
         "version": "0.1.0"
       }
     ]
+  },
+  {
+    "id": "a988991b-a6fe-43d1-af5e-f5b6789b24e6",
+    "name": "com.xquik/mcp",
+    "description": "128 REST operations. 120 MCP routes; 119 JSON/text ops. OAuth 2.1. Not affiliated with X Corp.",
+    "repository": {
+      "url": "https://github.com/Xquik-dev/x-twitter-scraper",
+      "source": "github",
+      "id": "1168120544"
+    },
+    "version_detail": {
+      "version": "2.6.0",
+      "release_date": "2026-07-30T02:01:29Z",
+      "is_latest": true
+    },
+    "package_canonical": "unknown",
+    "packages": [
+      {
+        "registry_name": "unknown",
+        "name": "com.xquik/mcp",
+        "version": "2.6.0",
+        "environment_variables": [
+          {
+            "description": "Optional Xquik API key when OAuth 2.1 is not used",
+            "is_required": false,
+            "format": "string",
+            "is_secret": true,
+            "name": "XQUIK_API_KEY"
+          }
+        ]
+      }
+    ],
+    "remotes": [
+      {
+        "transport_type": "streamable-http",
+        "url": "https://xquik.com/mcp"
+      }
+    ]
   }
 ]
