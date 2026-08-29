@@ -33,7 +33,7 @@ func ImportSeedFile(mongo *MongoDB, seedFilePath string) error {
 	// Read the seed file
 	seedData, err := readSeedFile(seedFilePath)
 	if err != nil {
-		log.Fatalf("Failed to read seed file: %v", err)
+		return fmt.Errorf("failed to read seed file: %w", err)
 	}
 
 	collection := mongo.collection
@@ -48,18 +48,13 @@ func readSeedFile(path string) ([]model.ServerDetail, error) {
 	// Read the file content
 	fileContent, err := os.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %v", err)
+		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
 
 	// Parse the JSON content
 	var servers []model.ServerDetail
 	if err := json.Unmarshal(fileContent, &servers); err != nil {
-		// Try parsing as a raw JSON array and then convert to our model
-		var rawData []map[string]interface{}
-		if jsonErr := json.Unmarshal(fileContent, &rawData); jsonErr != nil {
-			return nil, fmt.Errorf("failed to parse JSON: %v (original error: %v)", jsonErr, err)
-		}
-
+		return nil, fmt.Errorf("failed to parse seed JSON: %w", err)
 	}
 
 	log.Printf("Found %d server entries in seed file", len(servers))
